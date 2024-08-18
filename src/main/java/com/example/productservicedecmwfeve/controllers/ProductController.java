@@ -2,9 +2,13 @@ package com.example.productservicedecmwfeve.controllers;
 
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.productservicedecmwfeve.dtos.ExceptionDto;
+import com.example.productservicedecmwfeve.exceptions.ProductNotExistsException;
 import com.example.productservicedecmwfeve.models.Product;
 import com.example.productservicedecmwfeve.services.ProductService;
 
@@ -12,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,8 +47,18 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getSingleProduct(@PathVariable("id") Long id) {
-        return productService.getSingleProduct(id);
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long id) throws ProductNotExistsException{
+        
+        // throw new RuntimeException("Something went WWrong");
+        // try{
+            return new ResponseEntity<>(
+                productService.getSingleProduct(id),
+                HttpStatus.OK);
+        // }catch(ArithmeticException exception){
+        //     ResponseEntity<Product> response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //     return response;
+        // }
+
     }
 
     @PostMapping()
@@ -68,7 +83,18 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         
     }
+
+    // @ExceptionHandler(ProductNotExistsException.class)
+    // public ResponseEntity<Void> handleProductNotExistsException(){
+    //     return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    // }
     
-    
-    
+    // @ExceptionHandler(ProductNotExistsException.class)
+    // public ResponseEntity<ExceptionDto> handleProductNotExistsException(
+    //         ProductNotExistsException exception
+    //     ){
+    //         ExceptionDto dto = new ExceptionDto();
+    //         dto.setMessage(exception.getMessage());
+    //         return new ResponseEntity<>(dto,HttpStatus.FORBIDDEN);
+    //     }
 }

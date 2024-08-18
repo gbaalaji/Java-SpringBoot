@@ -11,6 +11,7 @@ import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.productservicedecmwfeve.dtos.FakeStoreProductDto;
+import com.example.productservicedecmwfeve.exceptions.ProductNotExistsException;
 import com.example.productservicedecmwfeve.models.Category;
 import com.example.productservicedecmwfeve.models.Product;
 
@@ -39,9 +40,16 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Product getSingleProduct(Long idlong){
+    public Product getSingleProduct(Long idlong) throws ProductNotExistsException{
+        // int i = 1/0;
         FakeStoreProductDto productDto = restTemplate.getForObject("https://fakestoreapi.com/products/"+idlong, 
         FakeStoreProductDto.class);
+        // return convertFakeStoreProductToProduct(productDto);
+        if (productDto == null){
+            throw new ProductNotExistsException(
+                "Product with id: " + idlong + " doesn't exist."
+            );
+        }
         return convertFakeStoreProductToProduct(productDto);
     }
 
