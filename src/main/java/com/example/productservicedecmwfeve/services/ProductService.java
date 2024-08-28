@@ -6,8 +6,8 @@ import com.example.productservicedecmwfeve.exceptions.ProductNotExistsException;
 import com.example.productservicedecmwfeve.models.Product;
 
 public interface ProductService {
-    Product getSingleProduct(Long idLong) throws ProductNotExistsException;
+    Product getSingleProduct(Long id) throws ProductNotExistsException;
     List<Product> getAllProducts();
-    Product replaceProduct(Long idLong, Product product);
+    Product replaceProduct(Long id, Product product);
     
 }

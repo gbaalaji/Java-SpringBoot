@@ -29,6 +29,7 @@ public class ExceptionHandlers {
         ){
             ExceptionDto dto = new ExceptionDto();
             dto.setMessage(exception.getMessage());
+            dto.setDetail("Check the product id. It probably doesn't exists");
             return new ResponseEntity<>(dto,HttpStatus.OK);
         }
 };
