@@ -6,12 +6,15 @@ import javax.management.RuntimeErrorException;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.productservicedecmwfeve.dtos.ExceptionDto;
 import com.example.productservicedecmwfeve.exceptions.ProductNotExistsException;
 import com.example.productservicedecmwfeve.models.Product;
 import com.example.productservicedecmwfeve.services.ProductService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -26,16 +29,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 
-
-
-
 @RestController
 @RequestMapping("/products")
 public class ProductController {
     private ProductService productService;
+    // private RestTemplate restTemplate;
 
-    public ProductController(ProductService productService){
+
+    @Autowired
+    public ProductController(@Qualifier("selfProductService") ProductService productService){
         this.productService = productService;
+        // this.restTemplate = restTemplate;
     }
 
     
